@@ -1,0 +1,5 @@
+# Merlin config file for text editors (Vim, Emacs, VSCode etc.)
+.merlin
+
+# Dune project's build directory
+_build
