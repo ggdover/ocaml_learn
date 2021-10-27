@@ -70,6 +70,38 @@ So you can call this function like this:
 read_line "file.txt";;
 ```
 
+# loading/including external libraries in your ocaml project
+
+Another module/library is included into a source file (.ml) by
+using the keyword ```open``` like this example: ```open digestif```.
+
+* remember that the name of the library/module is case-sensitive when using ```open```
+
+## The standard library (stdlib)
+
+The OCaml standard library https://ocaml.org/api/Stdlib.html
+Is always opened by default, meaning this module can be used
+directly in any source file you write without using the
+```open Stdlib``` statement.
+
+## Loading external libraries
+
+1. Include in your .ml file with ```open``` keyword
+2. Add it to your dune configuration file (a file namned simply 'dune' in your project directory)
+   list the library you want to load under the ```libraries``` attribute, like this:
+   ```
+   (executable
+    (name hello)
+    (libraries wall))
+    ```
+* remember that the name of the libraries are case-sensitive
+3. The library might not be installed, so use the cli tool for ocamls source package manager: ```opam```. Here is an example on installing a library: ```opam install wall```.
+* To list currently installed packages/libraries: ```opam list```
+  * ```opam list``` defaults to ```opam install --installed```
+* To list both uninstalled and installed packages: ```opam list -A``` or ```opam list --all```
+* Run ```opam update``` to update list of available packages
+* Run ```opam upgrade``` to upgrade installed packages to latest version
+
 # the let-binding
 
 Outside any other function/let-binding:<br>
