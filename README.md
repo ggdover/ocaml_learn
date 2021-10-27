@@ -83,6 +83,7 @@ The OCaml standard library https://ocaml.org/api/Stdlib.html
 Is always opened by default, meaning this module can be used
 directly in any source file you write without using the
 ```open Stdlib``` statement.
+* Not sure if it's always the case, but it seems like the first letter should always be upper-case on the module/library name when using the ```open``` keyword.
 
 ## Loading external libraries
 
@@ -94,7 +95,8 @@ directly in any source file you write without using the
     (name hello)
     (libraries wall))
     ```
-* remember that the name of the libraries are case-sensitive
+* Not sure if it's always the case, but it
+seems like libraries are always namned with all lower-cases, and should be referred to as such when written/listed in your 'dune' config file.
 3. The library might not be installed, so use the cli tool for ocamls source package manager: ```opam```. Here is an example on installing a library: ```opam install wall```.
 * To list currently installed packages/libraries: ```opam list```
   * ```opam list``` defaults to ```opam install --installed```
