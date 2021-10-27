@@ -73,9 +73,8 @@ read_line "file.txt";;
 # loading/including external libraries in your ocaml project
 
 Another module/library is included into a source file (.ml) by
-using the keyword ```open``` like this example: ```open digestif```.
-
-* remember that the name of the library/module is case-sensitive when using ```open```
+using the keyword ```open``` like this example: ```open Digestif```.
+* Not sure if it's always the case, but it seems like the first letter should always be upper-case on the module/library name when using the ```open``` keyword.
 
 ## The standard library (stdlib)
 
@@ -83,7 +82,6 @@ The OCaml standard library https://ocaml.org/api/Stdlib.html
 Is always opened by default, meaning this module can be used
 directly in any source file you write without using the
 ```open Stdlib``` statement.
-* Not sure if it's always the case, but it seems like the first letter should always be upper-case on the module/library name when using the ```open``` keyword.
 
 ## Loading external libraries
 
