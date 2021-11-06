@@ -1,4 +1,27 @@
 
+# Links to good sites for documentation and other info
+
+* https://ocaml.org/learn/tutorials/
+  * Tutorials. Good place to start reading if you are new to the language.
+
+* https://ocaml.org/manual
+  * Lots of good info
+  * https://ocaml.org/manual/comp.html, a sub page with (among other things)
+    a list of the different compilation flags available for the ocaml compiler.
+
+* https://dune.readthedocs.io/en/stable/index.html
+  * Official documentation of "dune". Looks like it is generated from the documentation
+    files that can be found in the dune git repository: https://github.com/ocaml/dune/tree/main/doc
+  * https://dune.readthedocs.io/en/stable/dune-files.html#dune, a sub-page
+    * Stanza reference. Lists all the different options (stanzas) that you can use in a dune configuration file
+    * "Stanza" seems to be the word used for the different kind of options (the first word that appears after a opening parenthesis) used in a dune configuration file. So in the following example: "executable", "name", "flags" and "libraries" are all stanzas:
+    ```
+    (executable
+      (name gol)
+      (flags :standard -w -3-6-27)
+      (libraries tsdl tgls.tgles2 wall))
+    ```
+
 # Setting up a project/code base
 
 ## dune
@@ -21,6 +44,32 @@ Same functionality for the INIT_KIND library
 
 3. ```dune exec ./NAME.exe``` or ```dune exe ./NAME.exe```
 * Run your executable
+
+# Setting compilation flags
+
+In your dune configuration file there is an option called "flags" 
+that can be used to provide ocaml compilation flags.
+
+* More info about this "flags" option: https://dune.readthedocs.io/en/stable/concepts.html#ocaml-flags
+
+## Disable build/compilation warnings
+
+One of these flags is the "-w" flag, which can be used to enable or disable certain build/compilation warnings. To disable a warning, after the "-w" you write "-num", where you replace "num"
+with the number corresponding to a certain warning. Here is an example where the warnings 3, 6 and 27 have been disabled:
+```
+(executable
+ (name helloworld)
+ (flags :standard -w -3-6-27)
+```
+
+* As for the ":standard", it's something I found in example code for using the library "wall" (https://github.com/let-def/wall/blob/master/example/dune). In the documentation of dune found in this link: https://dune.readthedocs.io/en/stable/concepts.html#ordered-set-language. It's hard to find a exact and clear-cut explanation for what it is and does, as it is referenced to the option "flags" I find the following information (quoted from this link https://dune.readthedocs.io/en/stable/concepts.html#ocaml-flags ):</br></br>
+<em>The default value for (flags ...) is taken from the environment, as a result it is recommended to write (flags ...) fields as follows:</em>
+  ```
+  (flags (:standard <my options>))
+  ```
+  Thats the best information I have on this ":standard" thing. I guess for now I'll default to always include this in the field/option "flags", to follow the recommendation in the documentation.
+
+* To find more information about different compilation flags, visit this site: https://ocaml.org/manual/comp.html
 
 # Debugging and verify your code is correct
 
