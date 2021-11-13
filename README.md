@@ -22,6 +22,13 @@
       (libraries tsdl tgls.tgles2 wall))
     ```
 
+* https://baturin.org/docs/ocaml-faq/
+  * A poorly structured list with common questions and answers about OCaml
+    that the writer had to ask themselves often when trying to learn Ocaml.
+    Many useful little tips & tricks and explanations of OCaml language
+    functions.
+  * "What I wish I knew when learning OCaml"
+
 # Setting up a project/code base
 
 ## dune
@@ -116,7 +123,7 @@ This function ```read_line``` is defined to take one argument called ```file``` 
 is suppose to be a string to a file name.
 So you can call this function like this: 
 ```
-read_line "file.txt";;
+read_line "file.txt"
 ```
 
 # loading/including external libraries in your ocaml project
@@ -151,27 +158,6 @@ seems like libraries are always namned with all lower-cases, and should be refer
 * Run ```opam update``` to update list of available packages
 * Run ```opam upgrade``` to upgrade installed packages to latest version
 
-# the let-binding
-
-Outside any other function/let-binding:<br>
-```
-let label arg1 arg2 =
-    .....;;
-```
-Inside any other function/let-binding:
-```
-  let label = expression in
-  ....
-```
-
-(Another way of think about the ```let ... = expression in``` is as a 
- nested/local/lambda function (A function declared within a function))
-
-EDIT:
-
-Actually maybe I got the difference between ```let ... = exp``` and ```let ... = exp in``` slightly wrong.
-On second thought I think the made difference is that WITH the ```in``` keyword the body that the let-binding exists for is a expression that follow directly after the ```in``` keyword, where as WITHOUT the ```in``` keyword, the let-binding exists if you want to use it for multiple different expressions that follows.
-
 # How to represent a function (let-binding) without arguments
 
 ```
@@ -180,10 +166,41 @@ let funcName () =
 ```
 So in otherwords, we use the ```()``` where we normally write the arguments names
 
-# What does ```let _ = exp``` mean?
+# What does ```;``` mean/do and when should you use it?
 
-It means, evaluate whats in the expression "exp"
-but throw away the results. This is a little bit like the void return type on a function in C-like languages.
+You can view Semicolon (```;```) as a binary operator, that takes
+two unit expressions and executes them from elft to right and returns
+a unit:
+
+```val (;): unit -> unit -> unit```
+
+This means that an example like this:
+```
+let foo x y =
+    print_endline "Now I'll add up two numbers";
+    print_endline "Yes, seriously";
+    x + y
+```
+is sematically equivalent to
+```
+let foo x y =
+    let _ = print_endline "Now I'll add up two numbers" in
+    let _ = print_endline "Yes, seriously" in
+    x + y
+```
+
+So in conclusion, semicolon is more a syntactic sugar, than a neccessary
+syntax.
+
+Other sentences that captures/explains the function of a semicolon in
+ocaml is:
+* Semicolon is an expression separator, not a statement terminator. 
+* ```;``` works like a glue, between two expressions.
+
+Sources:
+* https://stackoverflow.com/questions/26286734/semicolon-single-expression-in-a-for-loop
+* https://baturin.org/docs/ocaml-faq/#semicolons-and-expression-sequences
+* https://ocamlverse.github.io/content/faq_if_semicolon.html
 
 # Difference between ```let () = ...``` and ```let _ = ...```
 
@@ -192,6 +209,14 @@ the expression 'exp' will not return any value (it will return 'unit' which is e
 
 ```let _ = exp```</br>
 the value that is returned by expression 'exp' is ignored. Can also be used to ignore only a part of returned value. For example ```let (a_,b) = exp``` if 'exp' returns value of type 'pair'.
+
+# What does ```;;``` (Double-semicolon) mean/do and when should you use it?
+
+TODO
+
+# When to write ```in``` and when not to when writing let-expressions?
+
+TODO
 
 # OCaml file extensions
 
