@@ -218,6 +218,63 @@ TODO
 
 TODO
 
+# Append element to list ```::``` (and concatenate lists with ```@```)
+
+The ```::``` is called the "cons" operator and is used
+to add/append an element to a list, and is used like this:
+```
+# 1 :: [2; 3];;
+- : int list = [1; 2; 3]
+```
+
+* !!!! NOTE !!!! the order matters! So the element to-be-added has to be on
+  the left-side and the list to-be-added-to has to be on the right-side
+
+The operator can also be used when pattern-matching against a list to
+pick apart the different elements in the list, and is often used in a
+recursive manner. See these following different examples:
+```
+# let rec total l =
+    match l with
+    | [] -> 0
+    | h :: t -> h + total t;;
+val total : int list -> int = <fun>
+# total [1; 3; 5; 3; 1];;
+- : int = 13
+```
+```
+# let rec length l =
+    match l with
+    | [] -> 0
+    | _ :: t -> 1 + length t;;
+val length : 'a list -> int = <fun>
+```
+```
+# let rec append a b =
+    match a with
+    | [] -> b
+    | h :: t -> h :: append t b;;
+val append : 'a list -> 'a list -> 'a list = <fun>
+```
+
+* The last example shows a function to append/concatenate
+  two lists, meaning ```append [1] [2; 3]```.
+  But in fact there is already a specific operator that does
+  this for us: ```@``` and it can be used like this ```[1] @ [2; 3]```
+
+To find more information about how lists can be manipulated and worked
+with, check out the api documentation for the module "List":
+https://ocaml.org/api/List.html
+
+# Concatenate strings (```^```)
+
+For concatenating strings there is the function ```cat``` like this:
+```String.cat s1 s2```, but there is a shorter version of this if
+you use the binary operator ```^``` like this ```s1 ^ s2```.
+
+This and more information about how strings can be manipulated and worked
+with you can find here: https://ocaml.org/api/String.html
+
 # OCaml file extensions
 
 | Purpose                 | C      | Bytecode | Native code (OCaml) |
