@@ -78,7 +78,90 @@ with the number corresponding to a certain warning. Here is an example where the
 
 * To find more information about different compilation flags, visit this site: https://ocaml.org/manual/comp.html
 
+## Disable alerts (Deprecated warnings etc.)
+
+In Ocaml you can mark components (functions, values and type declarations)
+in the ".mli" file with "alerts" that will be reported when those components
+are referenced. This can be used for example to report certain components
+as "deprecated" when they are referenced and can look like this when you then
+build your code:
+```
+File "main.ml", line 147, characters 14-24:
+147 |         match input_line ic with
+                    ^^^^^^^^^^
+Error (alert deprecated): Base.input_line
+[2016-09] this element comes from the stdlib distributed with OCaml.
+Use [Stdio.In_channel.input_line] instead.
+```
+
+The compilation flag to disable such alert ```-alert``` and you can
+enable or disable an alert, with similar syntax as with enabling/disabling
+build warnings:
+* Disable alert ```-id```
+* Enable alert ```+id```
+Where ```id``` identifies which alert. For example, for "deprecated"
+is would be ```-alert -deprecated``` (```-w -3``` also works because of
+legacy reasons. More info in the link right below.)
+
+If you still want to get the alert, but don't want it to make your build fail
+you can turn it into a non-fatal alert, like this:
+* ```--id```  turns alert ```id``` into a non-fatal error
+* ```++id```  turns alert ```id``` into a fatal error
+
+There is also ```@id``` ẁhich is equivalent to ```++id+id```
+
+More info about this: https://ocaml.org/manual/alerts.html
+
+### !!! TIP !!!
+While it's tempting to just disable such alerts with not much more
+thought, many times it can be solved with improving the way you
+import libraries to your code.
+
+For example, for deprecated alerts like I showed in the example above,
+changing from doing inclusion like this:
+```
+open Base
+
+...
+...
+match input_line ic with  <-- Tries to call "Base.input_line" which is marked with alert "deprecated"
+...
+...
+let result = String.lsplit2_exn field_str ~on:':' <-- Calls "Base.lsplit2_exn"
+...
+```
+
+To doing like this instead:
+```
+module String = struct
+    let lsplit2_exn = Base.String.lsplit2_exn
+end
+
+...
+...
+match input_line ic with  <-- Calls "Stdlib.input_line"
+...
+...
+let result = String.lsplit2_exn field_str ~on:':' <-- Calls "String.lsplit2_exn" which is the same as "Base.String.lsplit2_exn" because of module above.
+...
+```
+
+This does give you the extra hassle of having to explicitly define each function, type etc.
+you want from this "Base" library, but you also have very good oversight of which version of
+a certain function or type you are referencing.
+If you reference the wrong function, type it will usually end up in an error anyway, because
+of the strict type checking/system in Ocaml, but you can never be too safe when writing code.
+
 # Debugging and verify your code is correct
+
+## Verify that your function is tail-recursive (@tailcall)
+
+If you have a function you would normally call like this: ```next_line x y``` You can change it to the following ```(next_line [@tailcall]) x y``` and this will give you a warning when you build the code
+if this code is NOT tail-recursive.
+
+Sources:
+* https://stackoverflow.com/questions/23186717/verify-that-an-ocaml-function-is-tail-recursive
+* https://ocaml.org/manual/attributes.html
 
 ## Using utop
 
